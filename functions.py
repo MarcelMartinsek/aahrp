@@ -14,3 +14,11 @@ bounds = {
 }
 
 
+def schaffer2(xs) :
+    if len(xs) != 2 :
+        print("WARNING: Schaffer2 works on 2d")
+    x = xs[0]
+    y = xs[1]
+    prod1 = np.power(x*x+y*y, 0.25)
+    prod2 = np.power(50*(x*x+y*y), 0.1)
+    return prod1 * (np.sin(np.sin(prod2)) + 1)
