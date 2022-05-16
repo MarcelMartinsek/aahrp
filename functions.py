@@ -1,8 +1,8 @@
 import numpy as np
 class Bound:
-    def __init__(self, lower, upper):
-        self.L = lower
-        self.U = upper
+    def __init__(self, bounds):
+        self.L = bounds[0]
+        self.U = bounds[1]
 
 bounds = {
 	"Schaffer1":       [Bound([-120, 100]), Bound([-120, 100])],
@@ -99,7 +99,7 @@ def eMichalewicz(par):
 
 def shekelfox5(par):
     if len(par) != 5 :
-        print("WARNING:   Parameter vector should be length 9")  
+        print("WARNING:   Parameter vector should be length 5")  
     a = np.array([
         [9.681, 0.667, 4.783, 9.095, 3.517, 9.325, 6.544, 0.211, 5.122, 2.020],
         [9.400, 2.041, 3.788, 7.931, 2.882, 2.672, 3.568, 1.284, 7.033, 7.374],
@@ -149,3 +149,4 @@ def schwefel(par):
     pass
 
 
+print(shekelfox5((1,1,1,5,1)))
