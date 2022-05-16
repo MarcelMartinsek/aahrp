@@ -14,11 +14,20 @@ bounds = {
 }
 
 
-def schaffer2(xs) :
-    if len(xs) != 2 :
+def schaffer2(par) :
+    if len(par) != 2 :
         print("WARNING: Schaffer2 works on 2d")
-    x = xs[0]
-    y = xs[1]
+    x = par[0]
+    y = par[1]
     prod1 = np.power(x*x+y*y, 0.25)
     prod2 = np.power(50*(x*x+y*y), 0.1)
     return prod1 * (np.sin(np.sin(prod2)) + 1)
+
+def salomon(par):    
+    if len(par) != 5 :
+        print("WARNING:   Parameter vector should be length 5")
+    sum = np.sqrt(np.dot(par,par))
+    sum = -np.cos(2*np.pi*sum) + 0.1*sum + 1
+    return sum
+
+print(salomon((1,1)))
