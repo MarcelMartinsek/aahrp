@@ -31,10 +31,7 @@ optimums = {
 }
 
 
-def schaffer1(par):    
-    pass
-
-def schaffer2(par) :
+def Schaffer2(par) :
     if len(par) != 2 :
         print("WARNING: Schaffer2 works on 2d")
     x = par[0]
@@ -43,17 +40,15 @@ def schaffer2(par) :
     prod2 = np.power(50*(x*x+y*y), 0.1)
     return prod1 * (np.sin(np.sin(prod2)) + 1)
 
-def salomon(par):    
+def Salomon(par):    
     if len(par) != 5 :
         print("WARNING:   Parameter vector should be length 5")
     sum = np.sqrt(np.dot(par,par))
     sum = -np.cos(2*np.pi*sum) + 0.1*sum + 1
     return sum
 
-def griewank(par):    
-    pass
 
-def priceTransistor(par):    
+def PriceTransistor(par):    
     if len(par) != 9 :
         print("WARNING:   Parameter vector should be length 9")
     sumsqr = 0.0
@@ -70,10 +65,7 @@ def priceTransistor(par):
     sum *= sum
     return sum + sumsqr
 
-def expo(par):    
-    pass
-
-def modlangerman(par):
+def Modlangerman(par):
     if len(par) != 10 :
         print("WARNING:   Parameter vector should be length 9")
     a = np.array([[9.681, 0.667, 4.783, 9.095, 3.517, 9.325, 6.544, 0.211, 5.122, 2.020],
@@ -94,10 +86,8 @@ def modlangerman(par):
     
     return sum
 
-def eMichalewicz(par):    
-    pass
 
-def shekelfox5(par):
+def Shekelfox5(par):
     if len(par) != 5 :
         print("WARNING:   Parameter vector should be length 5")  
     a = np.array([
@@ -144,9 +134,6 @@ def shekelfox5(par):
         
         sum -= 1 / (sp + c[j])
     return sum
-
-def schwefel(par):    
-    pass
 
 def Schaffer1(par):
     num = np.power((np.sin(np.power(par[0] * par[0] + par[1] * par[1], 0.5))), 2) - 0.5
