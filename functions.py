@@ -147,6 +147,3 @@ def shekelfox5(par):
 
 def schwefel(par):    
     pass
-
-
-print(shekelfox5((1,1,1,5,1)))
