@@ -1,17 +1,35 @@
 import numpy as np
+class Bound:
+    def __init__(self, lower, upper):
+        self.L = lower
+        self.U = upper
 
 bounds = {
-	"Schaffer1":       [[-120, 100], [-120, 100]],
-	"Schaffer2":       [[-120, 100], [-120, 100]],
-	"Salomon":         [[-120, 100], [-120, 100], [-120, 100], [-120, 100], [-120, 100]],
-	"Griewank":        [[-550, 500], [-550, 500], [-550, 500], [-550, 500], [-550, 500], [-550, 500], [-550, 500], [-550, 500], [-550, 500], [-550, 500]],
-	"PriceTransistor": [[0, 10], [0, 10], [0, 10], [0, 10], [0, 10], [0, 10], [0, 10], [0, 10], [0, 10]],
-	"Expo":            [[-12, 10], [-12, 10], [-12, 10], [-12, 10], [-12, 10], [-12, 10], [-12, 10], [-12, 10], [-12, 10], [-12, 10]],
-	"Modlangerman":    [[0, 10], [0, 10], [0, 10], [0, 10], [0, 10], [0, 10], [0, 10], [0, 10], [0, 10], [0, 10]],
-	"EMichalewicz":    [[0, np.pi], [0, np.pi], [0, np.pi], [0, np.pi], [0, np.pi]],
-	"Shekelfox5":      [[0, 10], [0, 10], [0, 10], [0, 10], [0, 10]],
-	"Schwefel":        [[-500, 500], [-500, 500], [-500, 500], [-500, 500], [-500, 500], [-500, 500], [-500, 500], [-500, 500], [-500, 500], [-500, 500]],
+	"Schaffer1":       [Bound([-120, 100]), Bound([-120, 100])],
+	"Schaffer2":       [Bound([-120, 100]), Bound([-120, 100])],
+	"Salomon":         [Bound([-120, 100]), Bound([-120, 100]), Bound([-120, 100]), Bound([-120, 100]), Bound([-120, 100])],
+	"Griewank":        [Bound([-550, 500]), Bound([-550, 500]), Bound([-550, 500]), Bound([-550, 500]), Bound([-550, 500]), Bound([-550, 500]), Bound([-550, 500]), Bound([-550, 500]), Bound([-550, 500]), Bound([-550, 500])],
+	"PriceTransistor": [Bound([0, 10]), Bound([0, 10]), Bound([0, 10]), Bound([0, 10]), Bound([0, 10]), Bound([0, 10]), Bound([0, 10]), Bound([0, 10]), Bound([0, 10])],
+	"Expo":            [Bound([-12, 10]), Bound([-12, 10]), Bound([-12, 10]), Bound([-12, 10]), Bound([-12, 10]), Bound([-12, 10]), Bound([-12, 10]), Bound([-12, 10]), Bound([-12, 10]), Bound([-12, 10])],
+	"Modlangerman":    [Bound([0, 10]), Bound([0, 10]), Bound([0, 10]), Bound([0, 10]), Bound([0, 10]), Bound([0, 10]), Bound([0, 10]), Bound([0, 10]), Bound([0, 10]), Bound([0, 10])],
+	"EMichalewicz":    [Bound([0, np.pi]), Bound([0, np.pi]), Bound([0, np.pi]), Bound([0, np.pi]), Bound([0, np.pi])],
+	"Shekelfox5":      [Bound([0, 10]), Bound([0, 10]), Bound([0, 10]), Bound([0, 10]), Bound([0, 10])],
+	"Schwefel":        [Bound([-500, 500]), Bound([-500, 500]), Bound([-500, 500]), Bound([-500, 500]), Bound([-500, 500]), Bound([-500, 500]), Bound([-500, 500]), Bound([-500, 500]), Bound([-500, 500]), Bound([-500, 500])]
 }
+
+optimums = {
+    "Schaffer1": 0.0,
+    "Schaffer2": 0.0,
+    "Salomon": 0.0,
+    "Griewank": 0.0,
+    "PriceTransistor": 0.0,
+    "Expo": -1.0,
+    "Modlangerman": -0.965,
+    "EMichalewicz": -4.6877,
+    "Shekelfox5": -10.4056,
+    "Schwefel": -4189.829
+}
+
 
 def schaffer1(par):    
     pass
@@ -131,5 +149,3 @@ def schwefel(par):
     pass
 
 
-print(shekelfox5(np.ones(5)))
-print(shekelfox5([1,1,5,1,1]))
