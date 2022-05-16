@@ -147,3 +147,45 @@ def shekelfox5(par):
 
 def schwefel(par):    
     pass
+
+def Schaffer1(par):
+    num = np.power((np.sin(np.power(par[0] * par[0] + par[1] * par[1], 0.5))), 2) - 0.5
+    den = np.power((1 + .001 * (par[0] * par[0] + par[1] * par[1])), 2)
+    return 0.5 + num / den
+
+def Griewank(par):
+    prod = 1.0
+    sum = 0.0
+    for i, x in enumerate(par):
+        sum += x * x
+        prod *= np.cos(x / np.power(i+1, 0.5))
+    sum = sum/4000 - prod + 1
+    return sum
+
+def Expo (par):
+    sum = 0
+    for i in range(10):
+        sum += par[i] * par[i]
+    sum = -np.exp(-0.5 * sum)
+    return sum
+
+def EMichalewicz (par):
+    y = np.zeros(10)
+    cost = np.cos(np.pi / 6.0)
+    sint = np.sin(np.pi / 6.0)
+    i = 0
+    for i in range(0, len(par)-1, 2):
+        y[i] = par[i] * cost - par[i+1] * sint
+        y[i+1] = par[i] * sint + par[i+1] * cost
+    if i == len(par)-1:
+        y[i] = par[i]
+    sum = 0
+    for i in range(len(par)):
+        sum -= np.sin(y[i]) * np.power(np.sin((i+1) * y[i] * y[i] / np.pi), 20)
+    return sum
+
+def Schwefel (par):
+    sum = 0
+    for i in range(10):
+        sum -= par[i] * np.sin(np.power(abs(par[i]), 1/2))
+    return sum
