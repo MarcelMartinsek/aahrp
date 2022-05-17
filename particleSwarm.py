@@ -1,5 +1,5 @@
-from mimetypes import init
 import numpy as np
+
 class ParticleSwarm:
     def __init__(self, function, pop=50,w_limits=[0.9,0.4],c1=1,c2=1):
         self.obj_fun = function
@@ -14,11 +14,7 @@ class ParticleSwarm:
 
     def optimize(self, par, bounds):
         swarm = self.init_swarm(len(par),bounds)
-        pbest = np.zeros(swarm)
-        pbest_value = np.zeros(swarm.shape[0])
-        print(swarm)
+        pbest = np.copy(swarm)
+        pbest_value = [self.obj_fun(p) for p in pbest]
 
-
-        return swarm
-        
-
+        return swarm,pbest_value
