@@ -190,3 +190,16 @@ def Schwefel (par):
     for i in range(10):
         sum -= par[i] * np.sin(np.power(abs(par[i]), 1/2))
     return sum
+
+function = {
+    "Schaffer1": Schaffer1,
+    "Schaffer2": Schaffer2,
+    "Salomon": Salomon,
+    "Griewank": Griewank,
+    "PriceTransistor": PriceTransistor,
+    "Expo": Expo,
+    "Modlangerman": Modlangerman,
+    "EMichalewicz": EMichalewicz,
+    "Shekelfox5": Shekelfox5,
+    "Schwefel": Schwefel
+}
