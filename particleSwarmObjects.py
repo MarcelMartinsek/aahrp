@@ -58,7 +58,7 @@ class ParticleSwarm:
         
         return swarm
 
-    def __init__(self, fname, pop_size=50,max_iter=100,w_limits=[0.9,0.4],c1=1,c2=1,N=10):
+    def __init__(self, fname, pop_size=50,max_iter=1000,w_limits=[0.9,0.4],c1=1,c2=1,N=10):
         self.obj_fun_name = fname
         self.obj_fun = function[fname]
         self.bounds = bounds_arrays[fname]
@@ -73,14 +73,14 @@ class ParticleSwarm:
         for i in range(self.pop_size):
             self.swarm.append(Particle(self.obj_fun_name))
         self.swarm.sort(key=lambda p:p.pbest_val)
+        self.gbest_val = self.swarm[0].value
+        self.gbest_par = self.swarm[0].par
         self.history = [[p.par for p in self.swarm]]
         self.stop_check_N = N
 
-    def optimize(self,tol=10e-10):
+    def optimize(self,run = 50,tol=10e-12):
         objective = self.obj_fun
         swarm = self.swarm
-
-        gbest = swarm[0]
 
         stop_condition = False
         iter = self.max_iter
@@ -89,34 +89,52 @@ class ParticleSwarm:
         # print(self.w_limits,w_delta)
         c1 = self.c1
         c2 = self.c2
-        topN = swarm[0:self.stop_check_N]
-        while((not stop_condition) and iter>0):
+        # topN = swarm[0:self.stop_check_N]
+
+        stop_in = 0
+        # while((stop_in < run) and (not stop_condition) and iter>0):
+        while((stop_in < run) and iter>0):
             hist = []
             # print(iter)
+            changed_flag = False#flag is true if gbest has changed in this iteration
             for i,p in enumerate(swarm):
                 # print(i)
                 # print("vel is: ",vel[i,:])
-                val,par = p.move(w, c1, c2, gbest.par, objective)
+                val,par = p.move(w, c1, c2, self.gbest_par, objective)
                 hist.append(par)
-                if val < gbest.value:
-                    gbest = p
+                if val < self.gbest_val:
+                    changed_flag = True
+                    self.gbest_val = p.value
+                    self.gbest_par = p.par
+                    # print(self.gbest_val)
+
+            #increment stagnating iteration count
+            if changed_flag:
+                stop_in = 0 
+            else:
+                stop_in += 1
+                # print(stop_in)
+
             self.history.append(hist)
 
             swarm.sort(key=lambda x:x.value)
             # print(w)
             w -= w_delta
             # stop_condition = topN == swarm[0:10]
-            stop_condition = all([topN[i].approx(swarm[i],tol) for i in range(self.stop_check_N)])
+            # stop_condition = all([topN[i].approx(swarm[i],tol) for i in range(self.stop_check_N)])
             iter -= 1
         if(iter==0):
             print("Did not converge before max_iter iterrations.")
+        else:
+            print("Converged in ",iter," iterrations.")
+
             
         self.swarm = swarm
-        return gbest
+        return self.gbest_val,self.gbest_par
     
 fname = "Schaffer1"
-ps = ParticleSwarm(fname,max_iter=1000,w_limits=[0.5,0.001],c1=0.3,c2=0.5,N=10)
-gbest = ps.optimize(tol = 10e-8)
+ps = ParticleSwarm(fname,w_limits=[0.5,0.1])#,pop_size=100,max_iter=1000,w_limits=[0.5,0.001],c1=0.3,c2=0.5,N=10)
+gbest = ps.optimize(tol = 10e-5)
 
 
 fig = plt.figure()
