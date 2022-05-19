@@ -23,10 +23,13 @@ class Particle:
         # print(r1,r2,self.vel,self.pbest-self.par,sep = "    |    ")
         self.vel = w*self.vel + c1*r1*(self.pbest-self.par) + c2*r2*(gbest-self.par)
         newpar = self.par + self.vel
-        #use bisection if the particle would move out of bounds(lower velocity by half)
-        while ~((self.bounds[:,0] <= newpar.T).all() and (newpar.T <= self.bounds[:,1]).all()):
-            self.vel /= 2
-            newpar = self.par + self.vel
+        #crop OOB particles
+        if ~((self.bounds[:,0] <= newpar.T).all() and (newpar.T <= self.bounds[:,1]).all()):
+            return None,None
+        ##use bisection if the particle would move out of bounds(lower velocity by half)
+        # while ~((self.bounds[:,0] <= newpar.T).all() and (newpar.T <= self.bounds[:,1]).all()):
+        #     self.vel /= 2
+        #     newpar = self.par + self.vel
         self.par = newpar
         
         self.value = f(self.par)
@@ -102,6 +105,11 @@ class ParticleSwarm:
                 # print(i)
                 # print("vel is: ",vel[i,:])
                 val,par = p.move(w, c1, c2, self.gbest_par, objective)
+                #if particle went OOB, crop it out
+                if(val==None):
+                    swarm.remove(p)
+                    continue
+
                 hist.append(par)
                 if val < self.gbest_val:
                     changed_flag = True
@@ -137,17 +145,17 @@ class ParticleSwarm:
 parameters = {
     "Schaffer1": [100,10000,[0.5,0.01],0.3,0.5,100],
     "Schaffer2": [100,10000,[0.5,0.3],0.6,0.3,100],
-    "Salomon": [70,10000,[0.7,0.2],1,1,100],
-    "Griewank": [70,10000,[0.9,0.4],1,1,100],
-    "PriceTransistor": [70,10000,[0.9,0.4],1,1,100],
-    "Expo": [70,10000,[0.9,0.4],1,1,100],
-    "Modlangerman": [70,10000,[0.9,0.4],1,1,100],
-    "EMichalewicz": [70,10000,[0.9,0.4],1,1,100],
-    "Shekelfox5": [70,10000,[0.9,0.4],1,1,100],
-    "Schwefel": [70,10000,[0.5,0.1],0.3,0.5,100]
+    "Salomon": [100,10000,[0.7,0.2],1,1,100],
+    "Griewank": [100,10000,[0.9,0.4],1,1,100],
+    "PriceTransistor": [100,10000,[0.9,0.4],1,1,100],
+    "Expo": [100,10000,[0.9,0.4],1,1,100],
+    "Modlangerman": [100,10000,[0.9,0.4],1,1,100],
+    "EMichalewicz": [100,10000,[0.9,0.4],1,1,100],
+    "Shekelfox5": [100,10000,[0.9,0.4],1,1,100],
+    "Schwefel": [100,10000,[0.9,0.4],0.3,0.5,100]
 }
 
-for  fname in list(function.keys())[1:2]:
+for  fname in list(function.keys()):
     ps = ParticleSwarm(fname,*parameters[fname])#,pop_size=100,max_iter=1000,w_limits=[0.5,0.001],c1=0.3,c2=0.5,N=10)
     gbest_val,gbest_par = ps.optimize()
     print(fname,": ",gbest_val,"(",optimums[fname]-gbest_val,")")
