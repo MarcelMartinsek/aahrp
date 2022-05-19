@@ -58,7 +58,7 @@ class ParticleSwarm:
         
         return swarm
 
-    def __init__(self, fname, pop_size=50,max_iter=1000,w_limits=[0.9,0.4],c1=1,c2=1,N=10):
+    def __init__(self, fname, pop_size=70,max_iter=10000,w_limits=[0.9,0.4],c1=1,c2=1,run=100):
         self.obj_fun_name = fname
         self.obj_fun = function[fname]
         self.bounds = bounds_arrays[fname]
@@ -76,9 +76,10 @@ class ParticleSwarm:
         self.gbest_val = self.swarm[0].value
         self.gbest_par = self.swarm[0].par
         self.history = [[p.par for p in self.swarm]]
-        self.stop_check_N = N
+        # self.stop_check_N = N
+        self.run = run
 
-    def optimize(self,run = 50,tol=10e-12):
+    def optimize(self):
         objective = self.obj_fun
         swarm = self.swarm
 
@@ -93,7 +94,7 @@ class ParticleSwarm:
 
         stop_in = 0
         # while((stop_in < run) and (not stop_condition) and iter>0):
-        while((stop_in < run) and iter>0):
+        while((stop_in < self.run) and iter>0):
             hist = []
             # print(iter)
             changed_flag = False#flag is true if gbest has changed in this iteration
@@ -131,31 +132,46 @@ class ParticleSwarm:
             
         self.swarm = swarm
         return self.gbest_val,self.gbest_par
-    
-fname = "Schaffer1"
-ps = ParticleSwarm(fname,w_limits=[0.5,0.1])#,pop_size=100,max_iter=1000,w_limits=[0.5,0.001],c1=0.3,c2=0.5,N=10)
-gbest = ps.optimize(tol = 10e-5)
 
 
-fig = plt.figure()
-ax = plt.axes(xlim=ps.bounds[0], ylim=ps.bounds[1])
-line, = ax.plot([], [], 'ro',markersize=2)
+parameters = {
+    "Schaffer1": [100,10000,[0.5,0.01],0.3,0.5,100],
+    "Schaffer2": [100,10000,[0.5,0.2],0.6,0.3,100],
+    "Salomon": [70,10000,[0.7,0.2],1,1,100],
+    "Griewank": [70,10000,[0.9,0.4],1,1,100],
+    "PriceTransistor": [70,10000,[0.9,0.4],1,1,100],
+    "Expo": [70,10000,[0.9,0.4],1,1,100],
+    "Modlangerman": [70,10000,[0.9,0.4],1,1,100],
+    "EMichalewicz": [70,10000,[0.9,0.4],1,1,100],
+    "Shekelfox5": [70,10000,[0.9,0.4],1,1,100],
+    "Schwefel": [70,10000,[0.5,0.1],0.3,0.5,100]
+}
 
-# initialization function: plot the background of each frame
-def init():
-    line.set_data([], [])
-    return line,
+for  fname in list(function.keys())[0:2]:
+    ps = ParticleSwarm(fname,*parameters[fname])#,pop_size=100,max_iter=1000,w_limits=[0.5,0.001],c1=0.3,c2=0.5,N=10)
+    gbest_val,gbest_par = ps.optimize()
+    print(fname,": ",gbest_val,"(",optimums[fname]-gbest_val,")")
 
-# animation function.  This is called sequentially
-def animate(i):
-    line.set_data([p[0] for p in ps.history[i]],[p[1] for p in ps.history[i]])
-    return line,
+    if(len(ps.bounds) < 3):
+        fig = plt.figure()
+        ax = plt.axes(xlim=ps.bounds[0], ylim=ps.bounds[1])
+        line, = ax.plot([], [], 'ro',markersize=2)
 
-anim = FuncAnimation(fig, animate, init_func=init,
-                               frames=len(ps.history), interval=20)
+        # initialization function: plot the background of each frame
+        def init():
+            line.set_data([], [])
+            return line,
+
+        # animation function.  This is called sequentially
+        def animate(i):
+            line.set_data([p[0] for p in ps.history[i]],[p[1] for p in ps.history[i]])
+            return line,
+
+        anim = FuncAnimation(fig, animate, init_func=init,
+                                    frames=len(ps.history), interval=20)
 
 
-f = r"./test.gif" 
-writergif = PillowWriter(fps=30) 
-# anim.save(f, writer=writergif)
-plt.show()
+        f = r"./test.gif" 
+        writergif = PillowWriter(fps=30) 
+        # anim.save(f, writer=writergif)
+        plt.show()
