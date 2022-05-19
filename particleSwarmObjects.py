@@ -136,7 +136,7 @@ class ParticleSwarm:
 
 parameters = {
     "Schaffer1": [100,10000,[0.5,0.01],0.3,0.5,100],
-    "Schaffer2": [100,10000,[0.5,0.2],0.6,0.3,100],
+    "Schaffer2": [100,10000,[0.5,0.3],0.6,0.3,100],
     "Salomon": [70,10000,[0.7,0.2],1,1,100],
     "Griewank": [70,10000,[0.9,0.4],1,1,100],
     "PriceTransistor": [70,10000,[0.9,0.4],1,1,100],
@@ -147,7 +147,7 @@ parameters = {
     "Schwefel": [70,10000,[0.5,0.1],0.3,0.5,100]
 }
 
-for  fname in list(function.keys())[0:2]:
+for  fname in list(function.keys())[1:2]:
     ps = ParticleSwarm(fname,*parameters[fname])#,pop_size=100,max_iter=1000,w_limits=[0.5,0.001],c1=0.3,c2=0.5,N=10)
     gbest_val,gbest_par = ps.optimize()
     print(fname,": ",gbest_val,"(",optimums[fname]-gbest_val,")")
@@ -171,7 +171,7 @@ for  fname in list(function.keys())[0:2]:
                                     frames=len(ps.history), interval=20)
 
 
-        f = r"./test.gif" 
+        f = r"./test_"+fname+".gif" 
         writergif = PillowWriter(fps=30) 
-        # anim.save(f, writer=writergif)
+        anim.save(f, writer=writergif)
         plt.show()
