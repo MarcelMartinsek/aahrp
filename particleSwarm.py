@@ -1,5 +1,6 @@
 import numpy as np
 from functions import *
+
 class ParticleSwarm:
     def __init__(self, fname, pop_size=50,max_iter=100,w_limits=[0.9,0.4],c1=1,c2=1):
         self.obj_fun = function[fname]
@@ -58,6 +59,7 @@ class ParticleSwarm:
             iter -= 1
         return history,pbest_value
 
+    
 fname = "Schaffer1"
 ps = ParticleSwarm(fname)
 history,pbest_value = ps.optimize()
