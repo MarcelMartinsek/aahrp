@@ -13,7 +13,7 @@ class SimulatedAnnealing:
     def optimize(self):
         prev_par = np.random.uniform(low=self.bounds[:, 0], high=self.bounds[:, 1], size=len(self.bounds))
         prev_val = self.f(prev_par)
-        min_par = prev_par
+        min_par = min_par = np.copy(prev_par)
         min_val = prev_val
         prev_min_val = 0
         i = 0
