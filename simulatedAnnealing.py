@@ -2,7 +2,7 @@ import numpy as np
 from functions import *
 
 class SimulatedAnnealing:
-    def __init__(self, fname, temperature=1000, iterations=100, stop=10, n_coeff=1, grad=1, e=1.5, h=0.01):
+    def __init__(self, fname, temperature=1000, iterations=100, stop=10, n_coeff=1, grad=1, e=1, h=0.1):
         self.f = function[fname]
         self.bounds = bounds_arrays[fname]
         self.T = temperature
