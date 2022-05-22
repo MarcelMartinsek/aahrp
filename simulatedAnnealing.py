@@ -63,9 +63,9 @@ class SimulatedAnnealing:
                 # generate 10 random candidates and take the best one
                 for u in range(10):
                     for j in range(len(self.bounds)):
-                        par = par_current + 1 * np.random.uniform(low=[-1], high=[1],size=len(par))
+                        par = par_current + self.n_coeff * np.random.uniform(low=[-1], high=[1],size=len(par))
                         while ~((self.bounds[:, 0] <= par).all() and (par <= self.bounds[:, 1]).all()):
-                            par = par_current + 1 * np.random.uniform(low=[-1], high=[1], size=len(par))
+                            par = par_current + self.n_coeff * np.random.uniform(low=[-1], high=[1], size=len(par))
                     val = self.f(par)
                     call = call + 1
                     if u == 0:
