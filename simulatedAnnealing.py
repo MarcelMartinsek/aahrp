@@ -27,7 +27,7 @@ class SimulatedAnnealing:
                 grad[j] = (self.f(x0_new) - self.f(x0)) / e
                 call = call + 2
             x = x0 - (h * grad)
-            if (abs(x[0]-x0[0]) < tol) and (abs(x[1]-x0[1]) < tol):
+            if (x[0]-x0[0] < tol) and (x[1]-x0[1] < tol):
                 break
             x0 = np.copy(x)
         v = self.f(x)
